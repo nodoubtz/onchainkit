@@ -1,0 +1,57 @@
+# Ignore sensitive files and directories to prevent exposing vulnerabilities
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Secrets
+*.pem
+*.key
+*.crt
+*.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Build directories
+dist/
+build/
+out/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE/editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs
+*.njsproj
+*.sln
+
+# Coverage directories
+coverage/
+
+# Temporary files
+*.tmp
+*.swp
+
+# Backup files
+*.bak
+*.orig
+
+# Other sensitive files
+*.p12
+*.pfx
+*.jks
+*.keystore
