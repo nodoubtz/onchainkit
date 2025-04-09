@@ -67,8 +67,8 @@ export const usePaymentMethods = ({
     onError,
   ]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: initial effect
   useEffect(() => {
     handleFetchPaymentMethods();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };

@@ -9,6 +9,8 @@ import { ConnectWallet } from './ConnectWallet';
 import { ConnectWalletText } from './ConnectWalletText';
 import { useWalletContext } from './WalletProvider';
 import type { Connector } from 'wagmi';
+import type { UseAccountReturnType, UseConnectReturnType, Config } from 'wagmi';
+import type { WalletContextType } from '../types';
 
 const openConnectModalMock = vi.fn();
 
@@ -29,6 +31,11 @@ vi.mock('./WalletProvider', () => ({
   WalletProvider: ({ children }: { children: ReactNode }) => (
     <div>{children}</div>
   ),
+}));
+
+vi.mock('@/identity', () => ({
+  Name: () => <div data-testid="ockName">Name</div>,
+  Avatar: () => <div data-testid="ockAvatar">Avatar</div>,
 }));
 
 vi.mock('@rainbow-me/rainbowkit', () => ({
@@ -78,7 +85,7 @@ describe('ConnectWallet', () => {
       chain: undefined,
       chainId: undefined,
       connector: undefined,
-    } as any);
+    } as unknown as UseAccountReturnType<Config>);
 
     vi.mocked(useConnect).mockReturnValue({
       connectors: [
@@ -95,7 +102,7 @@ describe('ConnectWallet', () => {
       ],
       connect: vi.fn(),
       status: 'idle',
-    } as any);
+    } as unknown as UseConnectReturnType<Config, unknown>);
 
     vi.mocked(useWalletContext).mockReturnValue({
       isSubComponentOpen: false,
@@ -108,7 +115,7 @@ describe('ConnectWallet', () => {
       isMobile: false,
       isConnecting: false,
       walletOpen: false,
-    } as any);
+    } as unknown as WalletContextType);
 
     vi.mocked(useOnchainKit).mockReturnValue({
       config: {
@@ -121,7 +128,7 @@ describe('ConnectWallet', () => {
         projectId: '1',
         appMetadata: { name: 'Test App' },
       },
-    } as any);
+    } as unknown as ReturnType<typeof useOnchainKit>);
 
     vi.mocked(useAnalytics).mockReturnValue({
       sendAnalytics: mockSendAnalytics,
@@ -151,7 +158,7 @@ describe('ConnectWallet', () => {
       ],
       connect: vi.fn(),
       status: 'pending',
-    } as any);
+    } as unknown as UseConnectReturnType<Config, unknown>);
 
     vi.mocked(useAccount).mockReturnValue({
       address: '0x0' as `0x${string}`,
@@ -164,7 +171,7 @@ describe('ConnectWallet', () => {
       chain: undefined,
       chainId: undefined,
       connector: undefined,
-    } as any);
+    } as unknown as UseAccountReturnType<Config>);
 
     render(<ConnectWallet text="Connect Wallet" />);
     const spinner = screen.getByTestId('ockSpinner');
@@ -186,7 +193,7 @@ describe('ConnectWallet', () => {
         id: 'mockConnector',
         name: 'MockConnector',
       } as unknown as Connector,
-    } as any);
+    } as unknown as UseAccountReturnType<Config>);
 
     render(
       <ConnectWallet text="Connect Wallet">
@@ -216,7 +223,7 @@ describe('ConnectWallet', () => {
       ],
       connect: connectMock,
       status: 'idle',
-    } as any);
+    } as unknown as UseConnectReturnType<Config, unknown>);
 
     vi.mocked(useAnalytics).mockReturnValue({
       sendAnalytics: mockSendAnalytics,
@@ -284,7 +291,7 @@ describe('ConnectWallet', () => {
         id: 'mockConnector',
         name: 'MockConnector',
       } as unknown as Connector,
-    } as any);
+    } as unknown as UseAccountReturnType<Config>);
 
     vi.mocked(useWalletContext).mockReturnValue({
       isSubComponentOpen: false,
@@ -297,7 +304,7 @@ describe('ConnectWallet', () => {
       isMobile: false,
       isConnecting: false,
       walletOpen: false,
-    } as any);
+    } as unknown as WalletContextType);
 
     const { rerender } = render(
       <ConnectWallet text="Connect Wallet">
@@ -319,7 +326,7 @@ describe('ConnectWallet', () => {
       isMobile: false,
       isConnecting: false,
       walletOpen: false,
-    } as any);
+    } as unknown as WalletContextType);
 
     rerender(
       <ConnectWallet text="Connect Wallet">
@@ -343,7 +350,7 @@ describe('ConnectWallet', () => {
       isMobile: false,
       isConnecting: false,
       walletOpen: false,
-    } as any);
+    } as unknown as WalletContextType);
 
     vi.mocked(useAccount).mockReturnValue({
       address: '0x123' as `0x${string}`,
@@ -359,7 +366,7 @@ describe('ConnectWallet', () => {
         id: 'mockConnector',
         name: 'MockConnector',
       } as unknown as Connector,
-    } as any);
+    } as unknown as UseAccountReturnType<Config>);
 
     vi.mocked(useConnect).mockReturnValue({
       connectors: [
@@ -376,7 +383,7 @@ describe('ConnectWallet', () => {
       ],
       connect: vi.fn(),
       status: 'idle',
-    } as any);
+    } as unknown as UseConnectReturnType<Config, unknown>);
 
     render(
       <ConnectWallet>
@@ -402,7 +409,7 @@ describe('ConnectWallet', () => {
         id: 'mockConnector',
         name: 'MockConnector',
       } as unknown as Connector,
-    } as any);
+    } as unknown as UseAccountReturnType<Config>);
 
     render(
       <ConnectWallet>
@@ -431,7 +438,7 @@ describe('ConnectWallet', () => {
       chain: undefined,
       chainId: undefined,
       connector: undefined,
-    } as any);
+    } as unknown as UseAccountReturnType<Config>);
 
     vi.mocked(useConnect).mockReturnValue({
       connectors: [
@@ -448,7 +455,7 @@ describe('ConnectWallet', () => {
       ],
       connect: connectMock,
       status: 'idle',
-    } as any);
+    } as unknown as UseConnectReturnType<Config, unknown>);
 
     render(<ConnectWallet text="Connect Wallet" onConnect={onConnectMock} />);
 
@@ -471,7 +478,7 @@ describe('ConnectWallet', () => {
         id: 'mockConnector',
         name: 'MockConnector',
       } as unknown as Connector,
-    } as any);
+    } as unknown as UseAccountReturnType<Config>);
 
     render(<ConnectWallet text="Connect Wallet" onConnect={onConnectMock} />);
 
@@ -494,7 +501,7 @@ describe('ConnectWallet', () => {
         id: 'mockConnector',
         name: 'MockConnector',
       } as unknown as Connector,
-    } as any);
+    } as unknown as UseAccountReturnType<Config>);
 
     const onConnectMock = vi.fn();
     render(<ConnectWallet text="Connect Wallet" onConnect={onConnectMock} />);
@@ -515,7 +522,7 @@ describe('ConnectWallet', () => {
           projectId: '1',
           appMetadata: { name: 'Test App' },
         },
-      } as any);
+      } as unknown as ReturnType<typeof useOnchainKit>);
 
       vi.mocked(useAccount).mockReturnValue({
         address: '0x0' as `0x${string}`,
@@ -528,7 +535,7 @@ describe('ConnectWallet', () => {
         chain: undefined,
         chainId: undefined,
         connector: undefined,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       vi.mocked(useConnect).mockReturnValue({
         connectors: [
@@ -545,7 +552,7 @@ describe('ConnectWallet', () => {
         ],
         connect: vi.fn(),
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       const setIsConnectModalOpenMock = vi.fn();
       vi.mocked(useWalletContext).mockReturnValue({
@@ -559,7 +566,7 @@ describe('ConnectWallet', () => {
         isConnecting: false,
         walletOpen: false,
         handleClose: vi.fn(),
-      } as any);
+      } as unknown as WalletContextType);
 
       render(<ConnectWallet text="Connect Wallet" />);
 
@@ -587,7 +594,7 @@ describe('ConnectWallet', () => {
         ],
         connect: connectMock,
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       render(<ConnectWallet text="Connect Wallet" />);
 
@@ -623,7 +630,7 @@ describe('ConnectWallet', () => {
         chain: undefined,
         chainId: undefined,
         connector: undefined,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       render(
         <ConnectWallet>
@@ -654,7 +661,7 @@ describe('ConnectWallet', () => {
         ],
         connect: connectMock,
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       vi.mocked(useAccount).mockReturnValue({
         address: '0x0' as `0x${string}`,
@@ -667,7 +674,7 @@ describe('ConnectWallet', () => {
         chain: undefined,
         chainId: undefined,
         connector: undefined,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       vi.mocked(useWalletContext).mockReturnValue({
         isConnectModalOpen: true,
@@ -680,7 +687,7 @@ describe('ConnectWallet', () => {
         isConnecting: false,
         walletOpen: false,
         handleClose: vi.fn(),
-      } as any);
+      } as unknown as WalletContextType);
 
       render(<ConnectWallet text="Connect" onConnect={onConnectMock} />);
 
@@ -703,7 +710,7 @@ describe('ConnectWallet', () => {
           id: 'mockConnector',
           name: 'MockConnector',
         } as unknown as Connector,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       expect(onConnectMock).toHaveBeenCalledTimes(1);
     });
@@ -722,7 +729,7 @@ describe('ConnectWallet', () => {
           projectId: '1',
           appMetadata: { name: 'Test App' },
         },
-      } as any);
+      } as unknown as ReturnType<typeof useOnchainKit>);
 
       vi.mocked(useAccount).mockReturnValue({
         address: '0x0' as `0x${string}`,
@@ -735,7 +742,7 @@ describe('ConnectWallet', () => {
         chain: undefined,
         chainId: undefined,
         connector: undefined,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       const setIsConnectModalOpenMock = vi.fn();
       vi.mocked(useWalletContext).mockReturnValue({
@@ -749,7 +756,7 @@ describe('ConnectWallet', () => {
         isConnecting: false,
         walletOpen: false,
         handleClose: vi.fn(),
-      } as any);
+      } as unknown as WalletContextType);
 
       render(<ConnectWallet text="Connect Wallet" />);
 
@@ -780,7 +787,7 @@ describe('ConnectWallet', () => {
         chain: undefined,
         chainId: undefined,
         connector: undefined,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       vi.mocked(useConnect).mockReturnValue({
         connectors: [
@@ -797,7 +804,7 @@ describe('ConnectWallet', () => {
         ],
         connect: connectMock,
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       const { rerender } = render(
         <ConnectWallet text="Connect Wallet" onConnect={onConnectMock} />,
@@ -823,7 +830,7 @@ describe('ConnectWallet', () => {
           id: 'mockConnector',
           name: 'MockConnector',
         } as unknown as Connector,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       rerender(
         <ConnectWallet text="Connect Wallet" onConnect={onConnectMock} />,
@@ -856,7 +863,7 @@ describe('ConnectWallet', () => {
         ],
         connect: connectMock,
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       vi.mocked(useAccount).mockReturnValue({
         address: '0x0' as `0x${string}`,
@@ -869,7 +876,7 @@ describe('ConnectWallet', () => {
         chain: undefined,
         chainId: undefined,
         connector: undefined,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       vi.mocked(useWalletContext).mockReturnValue({
         isConnectModalOpen: true,
@@ -882,7 +889,7 @@ describe('ConnectWallet', () => {
         isConnecting: false,
         walletOpen: false,
         handleClose: vi.fn(),
-      } as any);
+      } as unknown as WalletContextType);
 
       render(<ConnectWallet text="Connect" onConnect={onConnectMock} />);
 
@@ -905,7 +912,7 @@ describe('ConnectWallet', () => {
           id: 'mockConnector',
           name: 'MockConnector',
         } as unknown as Connector,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       expect(onConnectMock).toHaveBeenCalledTimes(1);
     });
@@ -929,7 +936,7 @@ describe('ConnectWallet', () => {
         ],
         connect: connectMock,
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       vi.mocked(useAccount).mockReturnValue({
         address: '0x0' as `0x${string}`,
@@ -942,7 +949,7 @@ describe('ConnectWallet', () => {
         chain: undefined,
         chainId: undefined,
         connector: undefined,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       vi.mocked(useWalletContext).mockReturnValue({
         isConnectModalOpen: true,
@@ -955,7 +962,7 @@ describe('ConnectWallet', () => {
         isConnecting: false,
         walletOpen: false,
         handleClose: vi.fn(),
-      } as any);
+      } as unknown as WalletContextType);
 
       const { rerender } = render(
         <ConnectWallet text="Connect" onConnect={onConnectMock} />,
@@ -980,7 +987,7 @@ describe('ConnectWallet', () => {
           id: 'mockConnector',
           name: 'MockConnector',
         } as unknown as Connector,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       rerender(
         <ConnectWallet text="Connect Wallet" onConnect={onConnectMock} />,
@@ -1005,7 +1012,7 @@ describe('ConnectWallet', () => {
           projectId: '1',
           appMetadata: { name: 'Test App' },
         },
-      } as any);
+      } as unknown as ReturnType<typeof useOnchainKit>);
 
       vi.mocked(useWalletContext).mockReturnValue({
         isConnectModalOpen: true,
@@ -1018,7 +1025,7 @@ describe('ConnectWallet', () => {
         isConnecting: false,
         walletOpen: false,
         handleClose: vi.fn(),
-      } as any);
+      } as unknown as WalletContextType);
 
       mockUseAccount.mockReturnValue({
         address: undefined,
@@ -1031,7 +1038,7 @@ describe('ConnectWallet', () => {
         chain: undefined,
         chainId: undefined,
         connector: undefined,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       const { rerender } = render(
         <ConnectWallet text="Connect Wallet" onConnect={onConnectMock} />,
@@ -1055,7 +1062,7 @@ describe('ConnectWallet', () => {
           id: 'mockConnector',
           name: 'MockConnector',
         } as unknown as Connector,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       rerender(
         <ConnectWallet text="Connect Wallet" onConnect={onConnectMock} />,
@@ -1083,7 +1090,7 @@ describe('ConnectWallet', () => {
           projectId: '1',
           appMetadata: { name: 'Test App' },
         },
-      } as any);
+      } as unknown as ReturnType<typeof useOnchainKit>);
 
       vi.mocked(useConnect).mockReturnValue({
         connectors: [
@@ -1100,7 +1107,7 @@ describe('ConnectWallet', () => {
         ],
         connect: vi.fn(),
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       render(<ConnectWallet text="Connect Wallet" />);
 
@@ -1132,7 +1139,7 @@ describe('ConnectWallet', () => {
         ],
         connect: connectMock,
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       render(<ConnectWallet text="Connect Wallet" />);
 
@@ -1164,7 +1171,7 @@ describe('ConnectWallet', () => {
         ],
         connect: connectMock,
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       render(<ConnectWallet text="Connect Wallet" />);
 
@@ -1198,7 +1205,7 @@ describe('ConnectWallet', () => {
         ],
         connect: connectMock,
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       render(<ConnectWallet text="Connect Wallet" />);
 
@@ -1233,7 +1240,7 @@ describe('ConnectWallet', () => {
         ],
         connect: vi.fn(),
         status: 'idle',
-      } as any);
+      } as unknown as UseConnectReturnType<Config, unknown>);
 
       mockUseAccount.mockReturnValue({
         address: '0x123' as `0x${string}`,
@@ -1249,7 +1256,7 @@ describe('ConnectWallet', () => {
           id: 'mockConnector',
           name: 'TestConnector',
         } as unknown as Connector,
-      } as any);
+      } as unknown as UseAccountReturnType<Config>);
 
       render(<ConnectWallet text="Connect Wallet" />);
 

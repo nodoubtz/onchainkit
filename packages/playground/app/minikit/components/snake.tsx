@@ -144,7 +144,7 @@ async function fetchLastAttestations() {
       attestations(
         where: { schemaId: { equals: "${SCHEMA_UID}" } }
         orderBy: { time: desc }
-        take: 8
+        take: 20
       ) {
         decodedDataJson
         attester
@@ -163,23 +163,24 @@ async function fetchLastAttestations() {
 
   const { data } = await response.json();
   return (data?.attestations ?? [])
-    .map((attestation: Attestation) => {
+    .reduce((acc: Score[], attestation: Attestation) => {
       const parsedData = JSON.parse(attestation?.decodedDataJson ?? "[]");
       const pattern = /(0x[a-fA-F0-9]{40}) scored (\d+) on minikit/;
       const match = parsedData[0].value?.value?.match(pattern);
       if (match) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [_, address, score] = match;
-        return {
+        acc.push({
           score: parseInt(score),
           address,
           attestationUid: attestation.id,
           transactionHash: attestation.txid,
-        };
+        });
       }
-      return null;
-    })
-    .sort((a: Score, b: Score) => b.score - a.score);
+      return acc;
+    }, [])
+    .sort((a: Score, b: Score) => b.score - a.score)
+    .slice(0, MAX_SCORES);
 }
 
 function useKonami(gameState: number) {
@@ -443,7 +444,7 @@ function AwaitingNextLevel({ score, level }: AwaitingNextLevelProps) {
   );
 }
 
-const SCHEMA_UID =
+export const SCHEMA_UID =
   "0xdc3cf7f28b4b5255ce732cbf99fe906a5bc13fbd764e2463ba6034b4e1881835";
 const EAS_CONTRACT = "0x4200000000000000000000000000000000000021";
 const easABI = [
