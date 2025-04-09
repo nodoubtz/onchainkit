@@ -1,4 +1,3 @@
-// biome-ignore lint/correctness/noNodejsModules: Needed for vite resolving
 import path from 'node:path';
 import { defineConfig } from 'vitest/config';
 
@@ -21,8 +20,6 @@ export default defineConfig({
         'esm/**',
         'node_modules/**',
         'onchainkit/esm/**',
-        'playground/**',
-        'create-onchain/**',
         '**/**.test.tsx',
       ],
       reportOnFailure: true,
@@ -37,7 +34,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
     environment: 'jsdom',
-    exclude: ['**/node_modules/**', 'playground/**', 'create-onchain/**'],
+    exclude: ['**/node_modules/**'],
     setupFiles: ['./vitest.setup.ts'],
     globals: true,
   },

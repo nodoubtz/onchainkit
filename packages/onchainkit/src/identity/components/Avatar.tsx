@@ -15,7 +15,6 @@ import { DisplayBadge } from './DisplayBadge';
  * Represents an Avatar component that displays either a loading indicator,
  * a default avatar, or a custom avatar based on Ethereum Name Service (ENS).
  */
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO Refactor this component
 export function Avatar({
   address = null,
   chain,
@@ -38,16 +37,19 @@ export function Avatar({
   }
 
   // The component first attempts to retrieve the ENS name and avatar for the given Ethereum address.
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data: name, isLoading: isLoadingName } = useName({
     address: accountAddress,
     chain: accountChain,
   });
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data: avatar, isLoading: isLoadingAvatar } = useAvatar(
     { ensName: name ?? '', chain: accountChain },
     { enabled: !!name },
   );
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const badge = useMemo(() => {
     return Children.toArray(children).find(findComponent(Badge));
   }, [children]);
@@ -73,7 +75,6 @@ export function Avatar({
         data-testid="ockAvatar_ImageContainer"
         className={cn('h-10 w-10 overflow-hidden rounded-full', className)}
       >
-        {/* biome-ignore lint: alt gets assigned */}
         {displayAvatarImg ? (
           <img
             className="min-h-full min-w-full object-cover"

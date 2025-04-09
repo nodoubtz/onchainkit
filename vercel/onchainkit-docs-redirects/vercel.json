@@ -353,12 +353,24 @@
   ],
   "rewrites": [
     {
+      "source": "/icon.png",
+      "destination": "/playground/snake-icon.png"
+    },
+    {
       "source": "/playground",
       "destination": "https://onchainkit-bsvq.vercel.app/"
     },
     {
       "source": "/playground/:match*",
       "destination": "https://onchainkit-bsvq.vercel.app/:match*"
+    },
+    {
+      "source": "/api/:match*",
+      "destination": "https://onchainkit-bsvq.vercel.app/api/:match*"
+    },
+    {
+      "source": "/.well-known/:match*",
+      "destination": "https://onchainkit-bsvq.vercel.app/.well-known/:match*"
     }
   ],
   "headers": [

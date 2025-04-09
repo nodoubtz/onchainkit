@@ -10,7 +10,7 @@ type GenericStatus<T> = {
   statusData: T;
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: generic status can be any type
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type AbstractLifecycleStatus = ErrorStatus | GenericStatus<any>;
 
 export type UseLifecycleStatusReturn<T extends AbstractLifecycleStatus> = [

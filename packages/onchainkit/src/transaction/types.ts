@@ -129,7 +129,7 @@ type PaymasterService = {
 
 export type SendBatchedTransactionsParams = {
   capabilities?: WalletCapabilities;
-  // biome-ignore lint: cannot find module 'wagmi/experimental/query'
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   sendCallsAsync: any;
   transactions?: Array<Call | ContractFunctionParameters>;
 };
@@ -330,7 +330,7 @@ export type UseSendCallsParams = {
 
 export type UseSendWalletTransactionsParams = {
   capabilities?: WalletCapabilities;
-  // biome-ignore lint: cannot find module 'wagmi/experimental/query'
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   sendCallsAsync: any;
   sendCallAsync: SendTransactionMutateAsync<Config, unknown> | (() => void);
   walletCapabilities: ViemWalletCapabilities;

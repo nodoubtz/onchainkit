@@ -2,194 +2,100 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import prompts from 'prompts';
 import pc from 'picocolors';
-import ora from 'ora';
-import {
-  createClickableLink,
-  detectPackageManager,
-  isValidPackageName,
-  toValidPackageName,
-  optimizedCopy,
-} from './utils.js';
+import { createOnchainKitTemplate } from './onchainkit.js';
+import { createMiniKitTemplate, createMiniKitManifest } from './minikit.js';
 
-const sourceDir = path.resolve(
-  fileURLToPath(import.meta.url), 
-  '../../../templates/next'
-);
+export function getArgs() {
+  const options = {
+    isHelp: false,
+    isVersion: false,
+    isManifest: false,
+    isMiniKitSnake: false,
+    isMiniKitBasic: false,
+  };
 
-const renameFiles: Record<string, string | undefined> = {
-  _gitignore: '.gitignore',
-  '_env.local': '.env.local',
-};
-
-const excludeDirs = ['node_modules', '.next'];
-const excludeFiles = ['.DS_Store', 'Thumbs.db'];
-
-async function copyDir(src: string, dest: string) {
-  await fs.promises.mkdir(dest, { recursive: true });
-  const entries = await fs.promises.readdir(src, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, renameFiles[entry.name] || entry.name);
-
-    if (entry.isDirectory()) {
-      if (!excludeDirs.includes(entry.name)) {
-        await copyDir(srcPath, destPath);
-      }
-    } else {
-      if (!excludeFiles.includes(entry.name)) {
-        await optimizedCopy(srcPath, destPath);
-      }
-    }
+  // find any argument with -- or -
+  const arg = process.argv.find(
+    (arg) => arg.startsWith('--') || arg.startsWith('-'),
+  );
+  switch (arg) {
+    case '-h':
+    case '--help':
+      options.isHelp = true;
+      break;
+    case '-v':
+    case '--version':
+      options.isVersion = true;
+      break;
+    case '--manifest':
+      options.isManifest = true;
+      break;
+    case '-m':
+    case '--mini':
+    case '--template=minikit-basic':
+      options.isMiniKitBasic = true;
+      break;
+    case '--template=minikit-snake':
+      options.isMiniKitSnake = true;
+      break;
+    default:
+      break;
   }
+
+  return options;
 }
 
 async function init() {
-  console.log(
-    `${pc.greenBright(`
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                                                                                              //
-    //         ::::::::  ::::    :::  ::::::::  :::    :::     :::     ::::::::::: ::::    ::: :::    ::: ::::::::::: :::::::::::   //
-    //       :+:    :+: :+:+:   :+: :+:    :+: :+:    :+:   :+: :+:       :+:     :+:+:   :+: :+:   :+:      :+:         :+:        //
-    //      +:+    +:+ :+:+:+  +:+ +:+        +:+    +:+  +:+   +:+      +:+     :+:+:+  +:+ +:+  +:+       +:+         +:+         //
-    //     +#+    +:+ +#+ +:+ +#+ +#+        +#++:++#++ +#++:++#++:     +#+     +#+ +:+ +#+ +#++:++        +#+         +#+          //
-    //    +#+    +#+ +#+  +#+#+# +#+        +#+    +#+ +#+     +#+     +#+     +#+  +#+#+# +#+  +#+       +#+         +#+           //
-    //   #+#    #+# #+#   #+#+# #+#    #+# #+#    #+# #+#     #+#     #+#     #+#   #+#+# #+#   #+#      #+#         #+#            //
-    //   ########  ###    ####  ########  ###    ### ###     ### ########### ###    #### ###    ### ###########     ###             //
-    //                                                                                                                              //
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////`)}\n\n`
-  );
-
-  const defaultProjectName = 'my-onchainkit-app';
-
-  let result: prompts.Answers<
-    'projectName' | 'packageName' | 'clientKey' | 'smartWallet'
-  >;
-
-  try {
-    result = await prompts(
-      [
-        {
-          type: 'text',
-          name: 'projectName',
-          message: pc.reset('Project name:'),
-          initial: defaultProjectName,
-          onState: (state) => {
-            state.value = state.value.trim();
-          },
-          validate: (value) => {
-            const targetDir = path.join(process.cwd(), value);
-            if (
-              fs.existsSync(targetDir) &&
-              fs.readdirSync(targetDir).length > 0
-            ) {
-              return 'Directory already exists and is not empty. Please choose a different name.';
-            }
-            return true;
-          },
-        },
-        {
-          type: (_, { projectName }: { projectName: string }) =>
-            isValidPackageName(projectName) ? null : 'text',
-          name: 'packageName',
-          message: pc.reset('Package name:'),
-          initial: (_, { projectName }: { projectName: string }) =>
-            toValidPackageName(projectName),
-          validate: (dir) =>
-            isValidPackageName(dir) || 'Invalid package.json name',
-        },
-        {
-          type: 'password',
-          name: 'clientKey',
-          message: pc.reset(
-            `Enter your ${createClickableLink(
-              'Coinbase Developer Platform Client API Key:',
-              'https://portal.cdp.coinbase.com/products/onchainkit'
-            )} (optional)`
-          ),
-        },
-        {
-          type: 'toggle',
-          name: 'smartWallet',
-          message: pc.reset('Use Coinbase Smart Wallet? (recommended)'),
-          initial: true,
-          active: 'yes',
-          inactive: 'no',
-        },
-      ],
-      {
-        onCancel: () => {
-          console.log('\nProject creation cancelled.');
-          process.exit(0);
-        },
-      }
-    );
-  } catch (cancelled: any) {
-    console.log(cancelled.message);
-    process.exit(1);
-  }
-
-  const { projectName, packageName, clientKey, smartWallet } = result;
-  const root = path.join(process.cwd(), projectName);
-
-  const spinner = ora(`Creating ${projectName}...`).start();
-
-  await copyDir(sourceDir, root);
-
-  const pkgPath = path.join(root, 'package.json');
-  const pkg = JSON.parse(await fs.promises.readFile(pkgPath, 'utf-8'));
-  pkg.name = packageName || toValidPackageName(projectName);
-  await fs.promises.writeFile(pkgPath, JSON.stringify(pkg, null, 2));
-
-  // Create .env file
-  const envPath = path.join(root, '.env');
-  await fs.promises.writeFile(
-    envPath,
-    `NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME=${projectName}\nNEXT_PUBLIC_ONCHAINKIT_API_KEY=${clientKey}\nNEXT_PUBLIC_ONCHAINKIT_WALLET_CONFIG=${
-      smartWallet ? 'smartWalletOnly' : 'all'
-    }`
-  );
-
-  spinner.succeed();
-  console.log(`\n${pc.magenta(`Created new OnchainKit project in ${root}`)}`);
-
-  console.log(`\nIntegrations:`);
-  if (smartWallet) {
-    console.log(`${pc.greenBright('\u2713')} ${pc.blueBright(`Smart Wallet`)}`);
-  }
-  console.log(`${pc.greenBright('\u2713')} ${pc.blueBright(`Base`)}`);
-  if (clientKey) {
+  const { isHelp, isVersion, isManifest, isMiniKitSnake, isMiniKitBasic } =
+    getArgs();
+  if (isHelp) {
     console.log(
-      `${pc.greenBright('\u2713')} ${pc.blueBright(
-        `Coinbase Developer Platform`
-      )}`
+      `${pc.greenBright(`
+Usage:
+npm create-onchain [options]
+
+Creates an OnchainKit project based on nextJs.
+
+Options:
+--version: Show version
+--mini: Create the basic MiniKit template
+--template=<template>: Create a specific template
+--manifest: Generate your Mini-App manifest
+--help: Show help
+
+Available Templates:
+- onchainkit: Create an OnchainKit project
+- minikit-basic: Create a Demo Mini-App
+- minikit-snake: Create a Snake Game Mini-App
+`)}`,
     );
-    console.log(
-      `${pc.greenBright('\u2713')} ${pc.blueBright(
-        `Paymaster`
-      )}`
-    );
+    process.exit(0);
   }
 
-  console.log(`\nFrameworks:`);
-  console.log(`${pc.cyan('- Wagmi')}`);
-  console.log(`${pc.cyan('- React')}`);
-  console.log(`${pc.cyan('- Next.js')}`);
-  console.log(`${pc.cyan('- Tailwind CSS')}`);
-  console.log(`${pc.cyan('- ESLint')}`);
-
-  console.log(
-    `\nTo get started with ${pc.green(
-      projectName
-    )}, run the following commands:\n`
-  );
-  if (root !== process.cwd()) {
-    console.log(` - cd ${path.relative(process.cwd(), root)}`);
+  if (isVersion) {
+    const pkgPath = path.resolve(
+      fileURLToPath(import.meta.url),
+      '../../../package.json',
+    );
+    const packageJsonContent = fs.readFileSync(pkgPath, 'utf8');
+    const packageJson = JSON.parse(packageJsonContent);
+    console.log(`${pc.greenBright(`v${packageJson.version}`)}`);
+    process.exit(0);
   }
-  console.log(' - npm install');
-  console.log(' - npm run dev');
+
+  if (isManifest) {
+    await createMiniKitManifest();
+    process.exit(0);
+  }
+
+  if (isMiniKitSnake) {
+    await createMiniKitTemplate('minikit-snake');
+  } else if (isMiniKitBasic) {
+    await createMiniKitTemplate('minikit-basic');
+  } else {
+    await createOnchainKitTemplate();
+  }
 }
 
 init().catch((e) => {
