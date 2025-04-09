@@ -44,20 +44,13 @@ export default [
 
       // TODO: These rules are temporarily disabled due to existing errors in codebase
       // They will be enabled and fixed as soon as the worskapce PR is merged
-      complexity: ['off', 10],
+      complexity: ['error', 20],
       'no-unused-vars': 'off',
       'sort-keys': [
         'off',
         'asc',
         { caseSensitive: true, natural: false, minKeys: 2 },
       ],
-      '@typescript-eslint/no-unused-vars': 'off',
-      'react-hooks/rules-of-hooks': 'off',
-      'react/display-name': 'off',
-      'react/prop-types': 'off',
-      'react-hooks/exhaustive-deps': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
 ];
