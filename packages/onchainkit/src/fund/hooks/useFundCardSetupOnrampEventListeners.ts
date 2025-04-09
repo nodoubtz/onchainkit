@@ -54,7 +54,6 @@ export const useFundCardSetupOnrampEventListeners = () => {
     });
   }, [updateLifecycleStatus, setSubmitButtonState]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Only want to run this effect once
   useEffect(() => {
     const unsubscribe = setupOnrampEventListeners({
       onEvent: handleOnrampEvent,
@@ -65,5 +64,6 @@ export const useFundCardSetupOnrampEventListeners = () => {
     return () => {
       unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
