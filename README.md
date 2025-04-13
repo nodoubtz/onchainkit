@@ -1,141 +1,81 @@
-<div align="center">
-  <p>
-    <a href="https://onchainkit.xyz">
-      <img src="./assets/read-me-banner.png" width="100%" height="100%" alt="OnchainKit logo vibes"/>
-    </a>
-  </p>
+# OnchainKit
 
-  <h1 style="font-size: 3em; margin-bottom: 20px;">
-    OnchainKit
-  </h1>
+OnchainKit is a collection of React components and TypeScript utilities designed to help you build top-tier onchain applications. This repository is a fork of the original [OnchainKit by Coinbase](https://github.com/coinbase/onchainkit).
 
-  <p style="font-size: 1.2em; max-width: 600px; margin: 0 auto 20px;">
-    React components and TypeScript utilities to help you build top-tier onchain apps.
-  </p>
+## Features
 
-<p>
-  <a href="https://www.npmjs.com/package/@coinbase/onchainkit" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/npm/v/@coinbase/onchainkit?style=flat-square&color=0052FF" alt="Version" />
-  </a>
-  <a href="https://github.com/coinbase/onchainkit/commits/main">
-    <img src="https://img.shields.io/github/last-commit/coinbase/onchainkit?color=0052FF&style=flat-square" alt="last update" />
-  </a>
-  <a href="https://www.npmjs.com/package/@coinbase/onchainkit" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/npm/dm/@coinbase/onchainkit?style=flat-square&color=0052FF" alt="Downloads per month" />
-  </a>
-  <a href="https://onchainkit.xyz/coverage">
-    <img src="https://img.shields.io/badge/coverage-100%25-0052FF?style=flat-square" alt="Code coverage" />
-  </a>
-  <a href="https://github.com/coinbase/onchainkit/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/npm/l/@coinbase/onchainkit?style=flat-square&color=0052FF" alt="MIT License" />
-  </a>
-</p>
+- **React Components**: Pre-built components for seamless integration with your onchain app.
+- **TypeScript Utilities**: A robust set of utilities to enhance development productivity.
+- **Modern Development**: Optimized for creating scalable and maintainable onchain applications.
 
-<p>
-  <a href="https://x.com/OnchainKit">
-    <img src="https://img.shields.io/twitter/follow/OnchainKit.svg?style=social" alt="Follow @OnchainKit" />
-  </a>
-  <a href="https://discord.gg/invite/cdp">
-      <img src="https://img.shields.io/badge/Chat%20on-Discord-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Chat on Discord" />
-  </a>
-  <a href="https://github.com/coinbase/onchainkit/stargazers">
-    <img src="https://img.shields.io/github/stars/coinbase/onchainkit" alt="stars" />
-  </a>
-  <a href="https://github.com/coinbase/onchainkit/network/members">
-    <img src="https://img.shields.io/github/forks/coinbase/onchainkit" alt="forks" />
-  </a>
-</p>
-</div>
+## Getting Started
 
-<br />
+Follow the steps below to set up and start using OnchainKit in your project.
 
-## 🚀 Quickstart
+### Installation
 
-Run `npm create onchain` to boostrap an example onchain app with all the batteries included.
-
-## ✨ Documentation
-
-For documentation and guides, visit [onchainkit.xyz](https://onchainkit.xyz/).
-
-## 🛠️ Contributing
-
-### Overview
-
-This project is set up as a monorepo with pnpm workspaces.
-
-### Requirements
-
-- Node.js v18
-- pnpm v10
-
-### Getting Started
-
-1. Clone the repository
+Install the package using npm or yarn:
 
 ```bash
-git clone https://github.com/coinbase/onchainkit.git
+npm install onchainkit
+# or
+yarn add onchainkit
 ```
 
-2. Install dependencies
+### Usage
 
-```bash
-pnpm install
+Import and use the components or utilities in your React application:
+
+```tsx
+import { ExampleComponent } from 'onchainkit';
+
+function App() {
+  return (
+    <div>
+      <ExampleComponent />
+    </div>
+  );
+}
 ```
 
-### Running packages
+## Documentation
 
-To run a script in a single package, use the following command:
+Visit the official [OnchainKit website](https://onchainkit.xyz) for detailed documentation and usage examples.
 
-```bash
-pnpm [-F | --filter] <package-name> <script-name>
-```
+## Contributing
 
-To run a script in all packages, use the following command:
+Contributions are welcome! Please fork the repository and submit a pull request with your improvements. Ensure your code follows the project's style and conventions.
 
-```bash
-pnpm run <script-name>
-```
+### Development Setup
 
-### Shorthands
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nodoubtz/onchainkit.git
+   ```
 
-We provide shorthands to filter by project in the root `package.json`.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-The following shorthands are available:
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-- `pnpm f:ock`: `pnpm --filter @coinbase/onchainkit`
-- `pnpm f:play`: `pnpm --filter playground`
-- `pnpm f:create`: `pnpm --filter create-onchain`
-- `pnpm f:manifest`: `pnpm --filter miniapp-manifest-generator`
+4. Run tests:
+   ```bash
+   npm test
+   ```
 
-### Development
+## License
 
-When working on components, you can build OnchainKit in watch mode and start the playground to view your components with the following command:
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-```bash
-pnpm f:play dev:watch
-```
+## Acknowledgements
 
-Then, you can view the playground at [http://localhost:3000](http://localhost:3000).
+This repository is a fork of the original [OnchainKit by Coinbase](https://github.com/coinbase/onchainkit). We are grateful for their work and contributions to the onchain development ecosystem.
 
+## Contact
 
-## 🌁 Team and Community
-
-- **OnchainKit** ([X](https://x.com/Onchainkit), [Warpcast](https://warpcast.com/onchainkit))
-- [Tina He](https://github.com/fakepixels) ([X](https://x.com/fkpxls))
-- [Mind Apivessa](https://github.com/mindapivessa) ([X](https://x.com/spicypaprika_))
-- [Alissa Crane](https://github.com/abcrane123) ([X](https://x.com/abcrane123))
-- [Alec Chen](https://github.com/0xAlec) ([X](https://x.com/0xAlec))
-- [Paul Cramer](https://github.com/cpcramer) ([X](https://x.com/PaulCramer_))
-- [Shelley Lai](https://github.com/0xchiaroscuro) ([X](https://x.com/hey_shells), [Warpcast](https://warpcast.com/chiaroscuro))
-- [Léo Galley](https://github.com/kirkas) ([X](https://x.com/artefact_lad))
-- [Adam Lessey](https://github.com/alessey) ([X](https://x.com/alessey))
-
-## 💫 Contributors
-
-<a href="https://github.com/coinbase/onchainkit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=coinbase/onchainkit" />
-</a>
-
-## 🌊 License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+For questions or support, please reach out to [@nodoubtz](https://github.com/nodoubtz).
