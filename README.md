@@ -1,3 +1,5 @@
+[![Version 🔖](https://github.com/nodoubtz/onchainkit/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/nodoubtz/onchainkit/actions/workflows/release.yml)
+
 # OnchainKit
 
 OnchainKit is a collection of React components and TypeScript utilities designed to help you build top-tier onchain applications. This repository is a fork of the original [OnchainKit by Coinbase](https://github.com/coinbase/onchainkit).
