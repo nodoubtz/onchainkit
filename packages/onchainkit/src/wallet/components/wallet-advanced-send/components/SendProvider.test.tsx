@@ -2,9 +2,18 @@ import { RequestContext } from '@/core/network/constants';
 import { usePriceQuote } from '@/internal/hooks/usePriceQuote';
 import { act, render, renderHook } from '@testing-library/react';
 import { formatUnits } from 'viem';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useWalletContext } from '../../WalletProvider';
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { SendProvider, useSendContext } from './SendProvider';
+import { usePortfolio } from '@/wallet/hooks/usePortfolio';
+import { useAccount } from 'wagmi';
+
+vi.mock('wagmi', () => ({
+  useAccount: vi.fn(),
+}));
+
+vi.mock('@/wallet/hooks/usePortfolio', () => ({
+  usePortfolio: vi.fn(),
+}));
 
 vi.mock('../../WalletProvider', () => ({
   useWalletContext: vi.fn(),
@@ -30,22 +39,26 @@ vi.mock('viem', async () => {
 });
 
 describe('useSendContext', () => {
-  const mockUseWalletAdvancedContext = useWalletContext as ReturnType<
-    typeof vi.fn
-  >;
-
   beforeEach(() => {
     vi.clearAllMocks();
-    mockUseWalletAdvancedContext.mockReturnValue({
-      tokenBalances: [
-        {
-          address: '',
-          symbol: 'ETH',
-          decimals: 18,
-          cryptoBalance: '2000000000000000000',
-          fiatBalance: 4000,
-        },
-      ],
+
+    (usePortfolio as Mock).mockReturnValue({
+      data: {
+        tokenBalances: [
+          {
+            address: '',
+            symbol: 'ETH',
+            decimals: 18,
+            cryptoBalance: '2000000000000000000',
+            fiatBalance: 4000,
+          },
+        ],
+      },
+      isFetching: false,
+    });
+
+    (useAccount as Mock).mockReturnValue({
+      address: '0x123',
     });
 
     vi.mocked(formatUnits).mockReturnValue('2');
@@ -61,10 +74,12 @@ describe('useSendContext', () => {
       lifecycleStatus: expect.any(Object),
       updateLifecycleStatus: expect.any(Function),
       ethBalance: expect.any(Number),
-      selectedRecipient: expect.any(Object),
-      handleRecipientSelection: expect.any(Function),
+      recipientState: expect.any(Object),
+      updateRecipientInput: expect.any(Function),
+      validateRecipientInput: expect.any(Function),
+      selectRecipient: expect.any(Function),
+      deselectRecipient: expect.any(Function),
       selectedToken: null,
-      handleRecipientInputChange: expect.any(Function),
       handleTokenSelection: expect.any(Function),
       handleResetTokenSelection: expect.any(Function),
       fiatAmount: null,
@@ -104,17 +119,20 @@ describe('useSendContext', () => {
   });
 
   it('should initialize and set lifecycle status when the user does not have an ETH balance', () => {
-    mockUseWalletAdvancedContext.mockReturnValue({
-      tokenBalances: [
-        {
-          address: '0x0000000000000000000000000000000000000000',
-          symbol: 'USDC',
-          decimals: 6,
-          cryptoBalance: '2000000000000000000',
-          fiatBalance: 4000,
-        },
-      ],
+    (usePortfolio as Mock).mockReturnValue({
+      data: {
+        tokenBalances: [
+          {
+            address: '0x0000000000000000000000000000000000000000',
+            symbol: 'USDC',
+            decimals: 6,
+            cryptoBalance: '2000000000000000000',
+            fiatBalance: 4000,
+          },
+        ],
+      },
     });
+
     const { result } = renderHook(() => useSendContext(), {
       wrapper: SendProvider,
     });
@@ -129,17 +147,20 @@ describe('useSendContext', () => {
     });
 
     act(() => {
-      result.current.handleRecipientSelection({
-        displayValue: 'user.eth',
+      result.current.selectRecipient({
+        phase: 'selected',
+        input: '0x1234',
         address: '0x1234',
+        displayValue: 'user.eth',
       });
     });
 
-    expect(result.current.selectedRecipient).toEqual({
-      displayValue: 'user.eth',
+    expect(result.current.recipientState).toEqual({
+      phase: 'selected',
+      input: '0x1234',
       address: '0x1234',
+      displayValue: 'user.eth',
     });
-    expect(result.current.lifecycleStatus.statusName).toBe('selectingToken');
   });
 
   it('should handle recipient input change', () => {
@@ -148,29 +169,25 @@ describe('useSendContext', () => {
     });
 
     act(() => {
-      result.current.handleRecipientSelection({
-        displayValue: 'user.eth',
-        address: '0x1234',
-      });
+      result.current.updateRecipientInput('0x1234');
     });
 
-    expect(result.current.selectedRecipient).toEqual({
-      displayValue: 'user.eth',
-      address: '0x1234',
+    expect(result.current.recipientState).toEqual({
+      phase: 'input',
+      input: '0x1234',
+      address: null,
+      displayValue: null,
     });
 
     act(() => {
-      result.current.handleRecipientInputChange();
+      result.current.deselectRecipient();
     });
 
-    expect(result.current.selectedRecipient).toEqual({
-      displayValue: '',
+    expect(result.current.recipientState).toEqual({
+      phase: 'input',
+      input: '0x1234',
       address: null,
-    });
-
-    expect(result.current.lifecycleStatus.statusName).toBe('selectingAddress');
-    expect(result.current.lifecycleStatus.statusData).toEqual({
-      isMissingRequiredField: true,
+      displayValue: null,
     });
   });
 
@@ -378,18 +395,18 @@ describe('useSendContext', () => {
   });
 
   it('should return the correct exchange rate when the price quote is loaded', () => {
-    vi.resetAllMocks();
-
-    mockUseWalletAdvancedContext.mockReturnValue({
-      tokenBalances: [
-        {
-          address: '0x0000000000000000000000000000000000000000',
-          symbol: 'USDC',
-          decimals: 6,
-          cryptoBalance: '2000000000000000000',
-          fiatBalance: 4000,
-        },
-      ],
+    (usePortfolio as Mock).mockReturnValue({
+      data: {
+        tokenBalances: [
+          {
+            address: '0x0000000000000000000000000000000000000000',
+            symbol: 'USDC',
+            decimals: 6,
+            cryptoBalance: '2000000000000000000',
+            fiatBalance: 4000,
+          },
+        ],
+      },
     });
 
     const mockUsePriceQuote = usePriceQuote as ReturnType<typeof vi.fn>;
@@ -431,18 +448,18 @@ describe('useSendContext', () => {
   });
 
   it('should return 0 for exchange rate when the price quote response is empty', () => {
-    vi.resetAllMocks();
-
-    mockUseWalletAdvancedContext.mockReturnValue({
-      tokenBalances: [
-        {
-          address: '0x0000000000000000000000000000000000000000',
-          symbol: 'USDC',
-          decimals: 6,
-          cryptoBalance: '2000000000000000000',
-          fiatBalance: 4000,
-        },
-      ],
+    (usePortfolio as Mock).mockReturnValue({
+      data: {
+        tokenBalances: [
+          {
+            address: '0x0000000000000000000000000000000000000000',
+            symbol: 'USDC',
+            decimals: 6,
+            cryptoBalance: '2000000000000000000',
+            fiatBalance: 4000,
+          },
+        ],
+      },
     });
 
     const mockUsePriceQuote = usePriceQuote as ReturnType<typeof vi.fn>;
@@ -476,18 +493,18 @@ describe('useSendContext', () => {
   });
 
   it('should return 0 for exchange rate when the price quote response is an error', () => {
-    vi.resetAllMocks();
-
-    mockUseWalletAdvancedContext.mockReturnValue({
-      tokenBalances: [
-        {
-          address: '0x0000000000000000000000000000000000000000',
-          symbol: 'USDC',
-          decimals: 6,
-          cryptoBalance: '2000000000000000000',
-          fiatBalance: 4000,
-        },
-      ],
+    (usePortfolio as Mock).mockReturnValue({
+      data: {
+        tokenBalances: [
+          {
+            address: '0x0000000000000000000000000000000000000000',
+            symbol: 'USDC',
+            decimals: 6,
+            cryptoBalance: '2000000000000000000',
+            fiatBalance: 4000,
+          },
+        ],
+      },
     });
 
     const mockUsePriceQuote = usePriceQuote as ReturnType<typeof vi.fn>;
