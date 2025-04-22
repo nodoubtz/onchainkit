@@ -1,4 +1,4 @@
-[![onchainkit build](https://github.com/nodoubtz/onchainkit/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/nodoubtz/onchainkit/actions/workflows/build.yml)
+[![onchainkit build](https://github.com/nodoubtz/onchainkit/actions/workflows/build.yml/badge.svg)](https://github.com/nodoubtz/onchainkit/actions/workflows/build.yml)
 
 [![Version 🔖](https://github.com/nodoubtz/onchainkit/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/nodoubtz/onchainkit/actions/workflows/release.yml)
 
