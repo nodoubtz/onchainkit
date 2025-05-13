@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.38.13
+
+### Patch Changes
+
+- **fix**: Update wagmi config if connectors change. By @dgca #2350
+
+## 0.38.12
+
+### Patch Changes
+
+- **fix**: MiniKit frames connector. By @dgca #2347
+
+## 0.38.11
+
+### Patch Changes
+
+- **feat**: Make "Sign Up" button optional in `<WalletModal/>`. By @dgca #2332
+- **fix**: Use mainnet to resolve ENS social media accounts. By @dgca #2333
+- **feat**: Configure Coinbase wallet preference via `<OnchainKitProvider/>`. By @dgca #2332
+- **fix**: Broken link in CHANGELOG. By @GarmashAlex #2331
+
+## 0.38.10
+
+### Patch Changes
+
+- **fix**: Fixed Basenames resolution. By @dgca #2329
+
 ## 0.38.9
 
 ### Patch Changes
@@ -198,7 +225,7 @@
 
   To fully disable telemetry collection, set the `analytics` flag to `false` in your OnchainKit Provider:
 
-  Learn more at https://onchainkit.xyz/guides/telemetry
+  Learn more at https://docs.base.org/builderkits/onchainkit/guides/telemetry
 
 ## 0.36.11
 
