@@ -18,13 +18,13 @@
     <img src="https://img.shields.io/npm/v/@coinbase/onchainkit?style=flat-square&color=0052FF" alt="Version" />
   </a>
   <a href="https://github.com/coinbase/onchainkit/commits/main">
-    <img src="https://img.shields.io/github/last-commit/coinbase/onchainkit?color=0052FF&style=flat-square" alt="last update" />
+    <img src="https://img.shields.io/github/last-commit/coinbase/onchainkit?color=0052FF&style=flat-square" alt="Last Update" />
   </a>
   <a href="https://www.npmjs.com/package/@coinbase/onchainkit" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/npm/dm/@coinbase/onchainkit?style=flat-square&color=0052FF" alt="Downloads per month" />
+    <img src="https://img.shields.io/npm/dm/@coinbase/onchainkit?style=flat-square&color=0052FF" alt="Downloads per Month" />
   </a>
   <a href="https://onchainkit.xyz/coverage">
-    <img src="https://img.shields.io/badge/coverage-100%25-0052FF?style=flat-square" alt="Code coverage" />
+    <img src="https://img.shields.io/badge/coverage-100%25-0052FF?style=flat-square" alt="Code Coverage" />
   </a>
   <a href="https://github.com/coinbase/onchainkit/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/npm/l/@coinbase/onchainkit?style=flat-square&color=0052FF" alt="MIT License" />
@@ -39,10 +39,10 @@
       <img src="https://img.shields.io/badge/Chat%20on-Discord-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Chat on Discord" />
   </a>
   <a href="https://github.com/coinbase/onchainkit/stargazers">
-    <img src="https://img.shields.io/github/stars/coinbase/onchainkit" alt="stars" />
+    <img src="https://img.shields.io/github/stars/coinbase/onchainkit" alt="Stars" />
   </a>
   <a href="https://github.com/coinbase/onchainkit/network/members">
-    <img src="https://img.shields.io/github/forks/coinbase/onchainkit" alt="forks" />
+    <img src="https://img.shields.io/github/forks/coinbase/onchainkit" alt="Forks" />
   </a>
 </p>
 </div>
@@ -51,46 +51,50 @@
 
 ## 🚀 Quickstart
 
-Run `npm create onchain` to bootstrap an example onchain app with all the batteries included.
+Run the following command to bootstrap an example onchain app with all the batteries included:
+
+```bash
+npm create onchain
+```
 
 ## ✨ Documentation
 
-For documentation and guides, visit [onchainkit.xyz](https://onchainkit.xyz/).
+For comprehensive documentation and guides, visit [onchainkit.xyz](https://onchainkit.xyz/).
 
 ## 🛠️ Contributing
 
 ### Overview
 
-This project is set up as a monorepo with pnpm workspaces.
+This project is organized as a monorepo using `pnpm` workspaces for effective package management.
 
 ### Requirements
 
-- Node.js v18
-- pnpm v10
+- **Node.js**: v18 or later
+- **pnpm**: v10 or later
 
 ### Getting Started
 
-1. Clone the repository
+1. Clone the repository:
 
-```bash
-git clone https://github.com/coinbase/onchainkit.git
-```
+   ```bash
+   git clone https://github.com/coinbase/onchainkit.git
+   ```
 
-2. Install dependencies
+2. Install dependencies:
 
-```bash
-pnpm install
-```
+   ```bash
+   pnpm install
+   ```
 
-### Running packages
+### Running Packages
 
-To run a script in a single package, use the following command:
+To execute a script in a specific package, use the following command:
 
 ```bash
 pnpm [-F | --filter] <package-name> <script-name>
 ```
 
-To run a script in all packages, use the following command:
+To execute a script across all packages, use the following command:
 
 ```bash
 pnpm run <script-name>
@@ -98,27 +102,24 @@ pnpm run <script-name>
 
 ### Shorthands
 
-We provide shorthands to filter by project in the root `package.json`.
-
-The following shorthands are available:
+We provide shorthands in the root-level `package.json` for filtering by project. The available shorthands are:
 
 - `pnpm f:ock`: `pnpm --filter @coinbase/onchainkit`
 - `pnpm f:play`: `pnpm --filter playground`
 - `pnpm f:create`: `pnpm --filter create-onchain`
 - `pnpm f:manifest`: `pnpm --filter miniapp-manifest-generator`
 
-### Development
+### Development Workflow
 
-When working on components, you can build OnchainKit in watch mode and start the playground to view your components with the following command:
+When working on components, you can build OnchainKit in watch mode and start the playground to preview your components. Run the following command:
 
 ```bash
 pnpm f:play dev:watch
 ```
 
-Then, you can view the playground at [http://localhost:3000](http://localhost:3000).
+Visit [http://localhost:3000](http://localhost:3000) to access the playground.
 
-
-## 🌁 Team and Community
+## 🌍 Team and Community
 
 - **OnchainKit** ([X](https://x.com/Onchainkit), [Warpcast](https://warpcast.com/onchainkit))
 - [Tina He](https://github.com/fakepixels) ([X](https://x.com/fkpxls))
@@ -130,12 +131,14 @@ Then, you can view the playground at [http://localhost:3000](http://localhost:30
 - [Léo Galley](https://github.com/kirkas) ([X](https://x.com/artefact_lad))
 - [Adam Lessey](https://github.com/alessey) ([X](https://x.com/alessey))
 
-## 💫 Contributors
+## ✨ Contributors
+
+We welcome contributions from the community. Check out our contributors:
 
 <a href="https://github.com/coinbase/onchainkit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=coinbase/onchainkit" />
+  <img src="https://contrib.rocks/image?repo=coinbase/onchainkit" alt="Contributors" />
 </a>
 
 ## 🌊 License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License. See the [LICENSE.md](LICENSE.md) file for details.
