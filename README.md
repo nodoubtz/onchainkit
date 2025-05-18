@@ -1,3 +1,7 @@
+[![Version 🔖](https://github.com/nodoubtz/Nodoubtz_Base-/actions/workflows/release.yml/badge.svg)](https://github.com/nodoubtz/Nodoubtz_Base-/actions/workflows/release.yml)
+
+
+
 # Nodoubtz_Base
 
 ## Overview
