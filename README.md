@@ -1,5 +1,6 @@
 [![Version 🔖](https://github.com/nodoubtz/Nodoubtz_Base-/actions/workflows/release.yml/badge.svg)](https://github.com/nodoubtz/Nodoubtz_Base-/actions/workflows/release.yml)
 
+[![Salus Security Scan](https://github.com/nodoubtz/Nodoubtz_Base-/actions/workflows/salus-scan.yml/badge.svg)](https://github.com/nodoubtz/Nodoubtz_Base-/actions/workflows/salus-scan.yml)
 
 
 # Nodoubtz_Base
