@@ -10,8 +10,12 @@ Nodoubtz_Base is a project aimed at [briefly describe the purpose of the reposit
 
 
 
+nodoubtz-patch-13
 ## Installation
 Follow these steps to set up the project on your local machine:
+=======
+Run `npm create onchain` to bootstrap an example onchain app with all the batteries included.
+Main
 
 1. Clone the repository:
    ```bash

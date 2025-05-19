@@ -180,7 +180,13 @@ describe('MiniKit', () => {
 
     expect(fs.promises.writeFile).toHaveBeenCalledWith(
       expect.any(String),
+nodoubtz-patch-13
       expect.stringContaining(getExpectedEnv('test-project', 'test-key')),
+=======
+      expect.stringContaining(
+        'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME=test-project\nNEXT_PUBLIC_ONCHAINKIT_API_KEY=test-key\nNEXT_PUBLIC_URL=\nNEXT_PUBLIC_SPLASH_IMAGE_URL=$NEXT_PUBLIC_URL/logo.png\nNEXT_PUBLIC_SPLASH_BACKGROUND_COLOR=FFFFFF\nNEXT_PUBLIC_IMAGE_URL=$NEXT_PUBLIC_URL/logo.png\nNEXT_PUBLIC_ICON_URL=$NEXT_PUBLIC_URL/logo.png\nNEXT_PUBLIC_VERSION=next\nREDIS_URL=\nREDIS_TOKEN=',
+      ),
+Main
     );
     expect(logSpy).toHaveBeenCalledWith(
       expect.stringContaining('Created new MiniKit project in'),
@@ -204,7 +210,13 @@ describe('MiniKit', () => {
 
     expect(fs.promises.writeFile).toHaveBeenCalledWith(
       expect.any(String),
+nodoubtz-patch-13
       expect.stringContaining(getExpectedEnv('test-project', 'test-key')),
+=======
+      expect.stringContaining(
+        'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME=test-project\nNEXT_PUBLIC_ONCHAINKIT_API_KEY=test-key\nNEXT_PUBLIC_URL=\nNEXT_PUBLIC_SPLASH_IMAGE_URL=$NEXT_PUBLIC_URL/logo.png\nNEXT_PUBLIC_SPLASH_BACKGROUND_COLOR=FFFFFF\nNEXT_PUBLIC_IMAGE_URL=$NEXT_PUBLIC_URL/logo.png\nNEXT_PUBLIC_ICON_URL=$NEXT_PUBLIC_URL/logo.png\nNEXT_PUBLIC_VERSION=next\nREDIS_URL=\nREDIS_TOKEN=',
+      ),
+Main
     );
     expect(logSpy).toHaveBeenCalledWith(
       expect.stringContaining('Created new MiniKit project in'),
@@ -268,6 +280,7 @@ describe('MiniKit', () => {
     expect(open).toHaveBeenCalledWith('http://localhost:3333');
     expect(fs.promises.writeFile).toHaveBeenCalledWith(
       expect.any(String),
+nodoubtz-patch-13
       expect.stringContaining('FARCASTER_HEADER=test-header'),
     );
     expect(fs.promises.writeFile).toHaveBeenCalledWith(
@@ -281,6 +294,11 @@ describe('MiniKit', () => {
     expect(fs.promises.writeFile).toHaveBeenCalledWith(
       expect.any(String),
       expect.stringContaining('NEXT_PUBLIC_URL=test-domain'),
+=======
+      expect.stringContaining(
+        'FARCASTER_HEADER=test-header\nFARCASTER_PAYLOAD=test-payload\nFARCASTER_SIGNATURE=test-signature\nNEXT_PUBLIC_URL=test-domain',
+      ),
+Main
     );
     expect(logSpy).toHaveBeenCalledWith(
       expect.stringContaining(
