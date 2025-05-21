@@ -1,7 +1,15 @@
 {
   "name": "create-onchain",
   "description": "Instantly create onchain applications with OnchainKit.",
+Nodoubtz
   "version": "0.0.21",
+=======
+nodoubtz-patch-13
+  "version": "0.0.21",
+=======
+  "version": "0.0.20",
+Main
+nodoubtz-patch-13
   "license": "MIT",
   "publishConfig": {
     "access": "public"

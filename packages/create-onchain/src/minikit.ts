@@ -71,6 +71,9 @@ export async function createMiniKitManifest(envPath?: string) {
     const webpageData = await getWebpageData();
 
     // get existing next public url to re-update on subsequent runs
+Nodoubtz
+=======
+nodoubtz-patch-13nodoubtz-patch-13
     let domain =
       existingEnv.match(/NEXT_PUBLIC_URL=(.*)/)?.[1]?.trim() ||
       '$NEXT_PUBLIC_URL';
@@ -94,6 +97,13 @@ export async function createMiniKitManifest(envPath?: string) {
       },
     };
 
+Nodoubtz
+=======
+=======
+    const domain =
+      existingEnv.match(/NEXT_PUBLIC_URL=(.*)/)?.[1] || '$NEXT_PUBLIC_URL';
+    const envContent = `FARCASTER_HEADER=${webpageData.header}\nFARCASTER_PAYLOAD=${webpageData.payload}\nFARCASTER_SIGNATURE=${webpageData.signature}\nNEXT_PUBLIC_URL=${webpageData.domain}`;
+Mainnodoubtz-patch-13
     const updatedEnv = existingEnv
       .replaceAll(domain, webpageData.domain)
       .split('\n')
@@ -254,8 +264,12 @@ NEXT_PUBLIC_APP_HERO_IMAGE=$NEXT_PUBLIC_URL/hero.png
 NEXT_PUBLIC_APP_TAGLINE=
 NEXT_PUBLIC_APP_OG_TITLE=${projectName}
 NEXT_PUBLIC_APP_OG_DESCRIPTION=
+Nodoubtz
 NEXT_PUBLIC_APP_OG_IMAGE=$NEXT_PUBLIC_URL/hero.png
 
+=======
+NEXT_PUBLIC_APP_OG_IMAGE=$NEXT_PUBLIC_URL/hero.pn<<<<<<< nodoubtz-patch-13
+nodoubtz-patch-13
 # Redis config
 
 REDIS_URL=
@@ -267,6 +281,8 @@ REDIS_TOKEN=
 
   console.log(`\n\n${pc.magenta(`Created new MiniKit project in ${root}`)}\n`);
 
+=======
+Main
   logMiniKitSetupSummary(projectName, root, clientKey);
 }
 
