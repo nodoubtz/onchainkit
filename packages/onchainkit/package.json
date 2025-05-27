@@ -1,10 +1,12 @@
 {
   "name": "@coinbase/onchainkit",
-  "version": "0.38.7",
+  "version": "0.38.9",
   "type": "module",
   "repository": "https://github.com/coinbase/onchainkit.git",
   "license": "MIT",
-  "access": "public",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "pnpm clean && pnpm bundle:prod && pnpm tailwind:prod",
     "dev": "concurrently \"pnpm tailwind:dev\" \"pnpm bundle:dev\"",
@@ -38,7 +40,7 @@
     "graphql-request": "^6.1.0",
     "qrcode": "^1.5.4",
     "tailwind-merge": "^2.3.0",
-    "viem": "^2.23.0",
+    "viem": "^2.27.2",
     "wagmi": "^2.14.11"
   },
   "devDependencies": {
@@ -55,10 +57,10 @@
     "autoprefixer": "^10.4.19",
     "babel-plugin-module-resolver": "^5.0.2",
     "concurrently": "^8.0.0",
+    "esbuild-fix-imports-plugin": "^1.0.19",
     "esbuild-plugin-babel": "^0.2.3",
     "glob": "^11.0.1",
     "globals": "^15.15.0",
-    "esbuild-fix-imports-plugin": "^1.0.19",
     "graphql": "^14",
     "graphql-request": "^6.1.0",
     "jsdom": "^24.1.0",
@@ -76,6 +78,14 @@
     "vite-plugin-dts": "^4.5.3",
     "vite-plugin-externalize-deps": "^0.9.0",
     "vitest": "^3.0.5"
+  },
+  "overrides": {
+    "wagmi": {
+      "viem": "$viem"
+    },
+    "@wagmi/core": {
+      "viem": "$viem"
+    }
   },
   "files": [
     "dist/**/*",
