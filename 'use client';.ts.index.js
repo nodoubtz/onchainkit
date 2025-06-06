@@ -10,3 +10,4 @@ const App = () => {
                 </OnchainKitProvider>
       );
 };
+export default App;
