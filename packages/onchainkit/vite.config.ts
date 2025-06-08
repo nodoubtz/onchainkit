@@ -7,6 +7,9 @@ import { extname, relative, resolve } from 'path';
 import { fileURLToPath } from 'node:url';
 import { glob } from 'glob';
 import path from 'node:path';
+import fs from 'fs';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 
 const entryPoints = Object.fromEntries(
   glob
@@ -23,12 +26,19 @@ const entryPoints = Object.fromEntries(
     ]),
 );
 
+const ockVersion = JSON.parse(
+  fs.readFileSync('./package.json', 'utf-8'),
+).version;
+
 // https://vite.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+  },
+  define: {
+    __OCK_VERSION__: JSON.stringify(ockVersion),
   },
   plugins: [
     externalizeDeps(),
@@ -54,6 +64,11 @@ export default defineConfig({
         assetFileNames: 'assets/[name][extname]',
         entryFileNames: '[name].js',
       },
+    },
+  },
+  css: {
+    postcss: {
+      plugins: [tailwindcss(), autoprefixer()],
     },
   },
 });

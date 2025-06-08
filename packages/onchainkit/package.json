@@ -1,17 +1,17 @@
 {
   "name": "@coinbase/onchainkit",
-  "version": "0.38.7",
+  "version": "0.38.13",
   "type": "module",
   "repository": "https://github.com/coinbase/onchainkit.git",
   "license": "MIT",
-  "access": "public",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "build": "pnpm clean && pnpm bundle:prod && pnpm tailwind:prod",
-    "dev": "concurrently \"pnpm tailwind:dev\" \"pnpm bundle:dev\"",
+    "build": "pnpm clean && pnpm bundle:prod",
+    "dev": "pnpm bundle:dev",
     "bundle:dev": "NODE_ENV=development vite build --watch",
     "bundle:prod": "vite build",
-    "tailwind:dev": "tailwind -i ./src/styles/index-with-tailwind.css -o ./dist/styles.css --watch",
-    "tailwind:prod": "tailwindcss -i ./src/styles/index.css -o ./dist/tailwind.css --minify && tailwindcss -i ./src/styles/index-with-tailwind.css -o ./dist/styles.css --minify",
     "clean": "rm -rf dist esm",
     "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
@@ -22,15 +22,17 @@
     "test:ui": "vitest --ui",
     "get-next-version": "node ./scripts/get-next-version.js",
     "publish-alpha": "node ./scripts/publish-alpha.js",
-    "validate-build": "node ./scripts/validate-build.js"
+    "validate-build": "node ./scripts/validate-build.js",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "peerDependencies": {
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
   },
   "dependencies": {
-    "@farcaster/frame-sdk": "^0.0.28",
-    "@farcaster/frame-wagmi-connector": "^0.0.16",
+    "@farcaster/frame-sdk": "^0.0.53",
+    "@farcaster/frame-wagmi-connector": "^0.0.42",
     "@tanstack/react-query": "^5",
     "@wagmi/core": "^2.16.7",
     "clsx": "^2.1.1",
@@ -38,10 +40,17 @@
     "graphql-request": "^6.1.0",
     "qrcode": "^1.5.4",
     "tailwind-merge": "^2.3.0",
-    "viem": "^2.23.0",
+    "viem": "^2.27.2",
     "wagmi": "^2.14.11"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/addon-onboarding": "^8.6.14",
+    "@storybook/blocks": "^8.6.14",
+    "@storybook/react": "^8.6.14",
+    "@storybook/react-vite": "^8.6.14",
+    "@storybook/test": "^8.6.14",
     "@testing-library/jest-dom": "6.4.7",
     "@testing-library/react": "^14.2.0",
     "@testing-library/user-event": "^14.6.1",
@@ -54,15 +63,17 @@
     "@vitest/ui": "^3.0.5",
     "autoprefixer": "^10.4.19",
     "babel-plugin-module-resolver": "^5.0.2",
+    "chromatic": "^11.28.2",
     "concurrently": "^8.0.0",
+    "esbuild-fix-imports-plugin": "^1.0.19",
     "esbuild-plugin-babel": "^0.2.3",
     "glob": "^11.0.1",
     "globals": "^15.15.0",
-    "esbuild-fix-imports-plugin": "^1.0.19",
     "graphql": "^14",
     "graphql-request": "^6.1.0",
     "jsdom": "^24.1.0",
     "packemon": "3.3.1",
+    "postcss": "^8",
     "react": "^18",
     "react-dom": "^18",
     "rimraf": "^5.0.5",
@@ -72,10 +83,18 @@
     "tailwindcss-animate": "^1.0.7",
     "tscpaths": "^0.0.9",
     "tsup": "^8.3.5",
-    "vite": "^5.3.3",
+    "vite": "^5.4.19",
     "vite-plugin-dts": "^4.5.3",
     "vite-plugin-externalize-deps": "^0.9.0",
     "vitest": "^3.0.5"
+  },
+  "overrides": {
+    "wagmi": {
+      "viem": "$viem"
+    },
+    "@wagmi/core": {
+      "viem": "$viem"
+    }
   },
   "files": [
     "dist/**/*",
@@ -86,8 +105,7 @@
   "module": "./dist/index.js",
   "exports": {
     "./package.json": "./package.json",
-    "./styles.css": "./dist/styles.css",
-    "./tailwind.css": "./dist/tailwind.css",
+    "./styles.css": "./dist/assets/style.css",
     "./theme": "./dist/styles/theme.js",
     ".": {
       "types": "./dist/index.d.ts",
