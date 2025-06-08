@@ -1,0 +1,5 @@
+// For ES Modules
+import dependency from 'dependency-name';
+
+// For CommonJS
+const dependency = require('dependency-name');
