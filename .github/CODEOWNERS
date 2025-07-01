@@ -1,0 +1,20 @@
+# Global code owners
+* @nodoubtz
+
+# OnchainKit package
+/packages/onchainkit/ @nodoubtz
+
+# Create OnChain CLI
+/packages/create-onchain/ @nodoubtz
+
+# Playground
+/packages/playground/ @nodoubtz
+
+# Miniapp Manifest Generator
+/packages/miniapp-manifest-generator/ @nodoubtz
+
+# Root configuration files
+/package.json @nodoubtz
+/pnpm-*.yaml @nodoubtz
+/eslint.config.mjs @nodoubtz
+/tsconfig.json @nodoubtz
